@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "svelte", "svelte\svelte.csproj", "{1A657AB4-D8DE-407F-8F73-FAFC7080414C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{361EF75B-CDAD-4AD2-BC08-5DAFA44028AD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks", "..\Projects\Cisp.Core\BuildingBlocks\BuildingBlocks.csproj", "{9661ECA5-BAE4-4648-A7D7-E52150277A1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A657AB4-D8DE-407F-8F73-FAFC7080414C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A657AB4-D8DE-407F-8F73-FAFC7080414C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A657AB4-D8DE-407F-8F73-FAFC7080414C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A657AB4-D8DE-407F-8F73-FAFC7080414C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5DFF302-C554-4623-9B34-3FF656734735}
+	EndGlobalSection
+EndGlobal
