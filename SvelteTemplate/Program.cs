@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,9 @@ namespace svelte
     {
         public static void Main(string[] args)
         {
+
+            Console.OutputEncoding = Encoding.UTF8;
+
             CreateHostBuilder(args).Build().Run();
         }
 

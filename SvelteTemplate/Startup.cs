@@ -24,15 +24,14 @@ namespace svelte
 
 
 
-            services.AddBuildingBlocks()
-                .AddCispAuthentication();
+            //services.AddBuildingBlocks()
+            //    .AddCispAuthentication();
             
             
 
             services.AddHttpContextAccessor();
 
             services.AddTransient<SqlConnection>(x => new SqlConnection(Configuration["SqlConnectionString"]));
-
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

@@ -8,11 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks", "..\Projects\Cisp.Core\BuildingBlocks\BuildingBlocks.csproj", "{9661ECA5-BAE4-4648-A7D7-E52150277A1E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SvelteTemplate", "SvelteTemplate\SvelteTemplate.csproj", "{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app4", "app4\app4.csproj", "{C25C44B2-5FBA-4E72-B41B-B9122BB144A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,18 +16,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9661ECA5-BAE4-4648-A7D7-E52150277A1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C25C44B2-5FBA-4E72-B41B-B9122BB144A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C25C44B2-5FBA-4E72-B41B-B9122BB144A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C25C44B2-5FBA-4E72-B41B-B9122BB144A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C25C44B2-5FBA-4E72-B41B-B9122BB144A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

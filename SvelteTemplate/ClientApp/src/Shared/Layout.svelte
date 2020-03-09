@@ -1,25 +1,26 @@
 <script>
-  import {getContext} from 'svelte'
-  import Filter from './Filter.svelte'
-  import {user} from './Store.js'
+  import { getContext } from "svelte";
+  import { user } from "../store.js";
+  import { createEventDispatcher } from "svelte";
+  import Modal from "./Modal.svelte";
+  const dispatch = createEventDispatcher();
 
-  export let search;
+  export let filter = null;
 
-  let name = getContext('name');
-
-let actionSlot;
-  $: showActions = actionSlot && actionSlot.innerHTML !== "";
-
-
-let filterShow = false;
-export let filterApply;
+  let name = getContext("name");
 
 
 
+  let filterShow = false;
+  let apply = () => {
+    filterShow = false;
+    dispatch("apply", filter);
+  };
 
-let showUser = false;
-let loginUrl = `${window.location.protocol}//${window.location.hostname}/login?ReturnUrl=${window.location.href}`;
+  let showUser = false;
+  let loginUrl = `${window.location.protocol}//${window.location.hostname}/login?ReturnUrl=${window.location.href}`;
 
+  let dev;
 </script>
 
 <style>
@@ -30,7 +31,6 @@ let loginUrl = `${window.location.protocol}//${window.location.hostname}/login?R
   .starter-template {
     padding: 0.5rem;
   }
-
 </style>
 
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
@@ -47,83 +47,103 @@ let loginUrl = `${window.location.protocol}//${window.location.hostname}/login?R
   </button>
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+
     <ul class="navbar-nav mr-auto">
-      
-      <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-      <li class="nav-item"><a class="nav-link" href="/mols">Пользователи</a></li>
 
       <li class="nav-item">
-        <a class="nav-link disabled" href="/">Disabled</a>
+        <a class="nav-link" href="/about">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/mols">Пользователи</a>
       </li>
 
-      <li class="nav-item dropdown" class:hidden={!showActions}>
+      <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
-          href="http://example.com"
-          id="dropdown01"
+          href="/"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false">
           Действия
         </a>
-        <div class="dropdown-menu" bind:this={actionSlot}>
+        <div class="dropdown-menu">
           <slot name="actions" />
         </div>
       </li>
     </ul>
-    <form class="form-inline" on:submit|preventDefault="{x => filterApply(search)}">
 
-      <div class="input-group">
-        <input
-          class="form-control"
-          type="search"
-          placeholder="Поиск"
-          bind:value={search}
-          />
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-secondary" type="search">
-            <i class="fa fa-search">
-          </button>
-          <button class="btn btn-outline-secondary" type="button" on:click={x => filterShow = true }>
-            <i class="fa fa-filter">
-          </button>
-
+    {#if filter}
+      <form class="form-inline" on:submit|preventDefault={apply}>
+        <div class="input-group">
+          {#if filter.search !== undefined}
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Поиск"
+              bind:value={filter.search} />
+            <div class="input-group-append" id="button-addon4">
+              <button class="btn btn-outline-secondary" type="search">
+                <i class="fa fa-search" />
+              </button>
+            </div>
+          {/if}
+          <div class="input-group-append" id="button-addon4">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              on:click={x => (filterShow = true)}>
+              <i class="fa fa-filter" />
+            </button>
+          </div>
 
         </div>
 
-        
-      </div>
-
-    </form>
-
+      </form>
+    {/if}
 
     <a href={loginUrl} class="ml-4">
-    {#if $user.name} 
-      <img src="https://cisp.ssnab.ru/Files/MolsPhotos/w80/{$user.mol_id}.jpg" alt="{$user.name}" width="30" height="38" title="{$user.name}">
+      {#if $user.name}
+        <img
+          src="https://cisp.ssnab.ru/Files/MolsPhotos/w80/{$user.mol_id}.jpg"
+          alt={$user.name}
+          width="30"
+          height="38"
+          title={$user.name} />
       {:else}
-      <i class="text-muted fa fa-question-circle fa-2x"></i>
+        <i class="text-muted fa fa-question-circle fa-2x" />
       {/if}
-    </div>
+    </a>
+  </div>
 
 </nav>
 
 <main role="main">
-
-
 
   <div class="starter-template">
     <slot />
   </div>
 
 </main>
-<!-- /.container -->
 
-
-
-<Filter bind:show={filterShow} bind:apply={filterApply}>
-  <div>
-    <slot name="filter"></slot>
+<Modal bind:show={filterShow}>
+  <div slot="header" class="text-muted">
+    <h5>
+      <i class="fa fa-filter" />
+      Фильтр
+    </h5>
   </div>
-</Filter>
+  <form id="filterForm" on:submit|preventDefault={apply} on:reset|preventDefault={apply}>
+    <slot name="filter" {filter} />
+  </form>
 
+  <div slot="footer">
+    <button type="submit" class="btn btn-outline-primary" form="filterForm">
+      Применить
+    </button>
+    <button class="btn btn-outline-secondary" type="reset" form="filterForm">
+      Очистить
+    </button>
 
+  </div>
+
+</Modal>

@@ -1,17 +1,13 @@
 <script>
     import Layout from '../Shared/Layout.svelte'
-    import {user} from '../Shared/Store'
-
-    async function filterApply() {
-        alert()
-    }
+    import {user} from '../store'
 
 
     
 
 </script>
 
-<Layout {filterApply} >
+<Layout>
 
     <div slot="actions">
               <a class="dropdown-item" href="/">Action</a>
@@ -20,18 +16,9 @@
     </div>
 
 
-    <div slot="filter">
-        <div class="form-group row">
-            <label class="col-form-label col-form-label-sm col-2">asdfasdf</label>
-            <div class="col-10">
-                <input class="form-control form-control-sm"/>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">HOME</div>
 
-    {$user.name}
+    
 
 
 </Layout>
