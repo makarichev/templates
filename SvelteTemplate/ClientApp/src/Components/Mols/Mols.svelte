@@ -32,11 +32,11 @@
 
   import { onMount, onDestroy } from "svelte";
   import { reglament } from "../../store.js";
-  import moment from "moment";
+  import { asDate } from '../../Shared/Actions.js';
 
   let apply = e => filter.set({ ..._filter, page: 1 });
   let sorted = e => ($filter.sort = e.detail);
-  let sort = "NAME";
+  $: sort = $filter.sort
 
   let _filter = $filter,
     data = [],
@@ -50,16 +50,29 @@
   onDestroy(unsubscribe);
 </script>
 
+<style>
+  th {
+    position: sticky;
+    top: 100px;
+    background-color: white;
+  }
+  .l {
+    position: sticky;
+    left: 20px;
+    background-color: white;
+  }
+</style>
+
 <Layout filter={_filter} on:apply={apply}>
-  <div class="container">
+  <div class="container-fluid">
 
     <h5>Сотрудники.</h5>
 
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th>#</th>
-          <th />
+          <th class="l">#</th>
+          <th></th>
           <th>
             <SortLink name="MOL_ID" {sort} on:sorted={sorted}>Код</SortLink>
           </th>
@@ -92,13 +105,14 @@
           <th>
             <SortLink name="DATE_HIRE" {sort} on:sorted={sorted}>Дата</SortLink>
           </th>
+          <th></th>
         </tr>
       </thead>
 
       <tbody>
         {#each data as item, i}
           <tr>
-            <td>{i + pager.offset + 1}</td>
+            <td class="l">{i + pager.offset + 1}</td>
             <td>
               <a href="/mols/{item.MOL_ID}">
                 <i class="fa fa-id-card-o" />
@@ -121,10 +135,7 @@
             <td>
               {#if item.POST_NAME}{item.POST_NAME}{/if}
             </td>
-            <td>
-              {#if item.DATE_HIRE}
-                {moment(item.DATE_HIRE).format('DD.MM.YYYY')}
-              {/if}
+            <td use:asDate={item.DATE_HIRE}>
             </td>
           </tr>
         {/each}

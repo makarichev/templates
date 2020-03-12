@@ -9,7 +9,7 @@ export const user = readable({ name: null }, set => {
 });
 
 export const reglament = readable({}, set => {
-   fetch(`/api/reglament`).then(async x => set(await x.json()));
+   fetch(`/api/user/reglament`).then(async x => set(await x.json()));
    return () => {};
  });
  

@@ -16,7 +16,7 @@
     </div>
 
 
-    <div class="container-fluid">HOME</div>
+    <div class="container"><h5>HOME</h5></div>
 
     
 

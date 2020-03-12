@@ -18,13 +18,10 @@
 
 <label for="input{text}">{text}:</label>
 <input
+  {required}
   value = {innerValue}
   on:change={change}
   type="week"
   class={className}
   id="input{text}" 
   />
-
-{#if required && !value}
-  <small class="text-danger">Обязательно для заполнения</small>
-{/if}

@@ -44,8 +44,8 @@ namespace svelte.Controllers
                         , d.name as DEPT_NAME
                         , p.name as POST_NAME
 	                from mols s (nolock)
-                        inner join depts d on d.dept_id = s.ddept_id    
-                        inner join mols_posts p on p.post_id = s.post_id
+                        left join depts d on d.dept_id = s.ddept_id    
+                        left join mols_posts p on p.post_id = s.post_id
 	                where s.is_working = 1
                         and (@search is null or s.name like @search + '%')
                         and (@date is null or s.DATE_HIRE <= @date)

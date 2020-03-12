@@ -1,6 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   import { reglament } from "../../store.js";
+  import {bindDate, asDate, selectTextOnFocus} from "../../Shared/Actions.js";
   import TextField from "../../Shared/Forms/TextField.svelte";
   import DateField from "../../Shared/Forms/DateField.svelte";
   import WeekField from "../../Shared/Forms/WeekField.svelte";
@@ -10,34 +11,40 @@
   let dispatcher = createEventDispatcher();
   export let mol = {};
 
-  $: valid =
-    mol.SURNAME &&
-    mol.NAME1 &&
-    mol.NAME2 &&
-    mol.ADDRESS &&
-    mol.DDEPT_ID &&
-    mol.POST_ID;
-
+  
   function save() {
-    if ($reglament.alloEdit && valid) dispatcher("save", mol);
+    console.log(mol)
+    //if ($reglament.alloEdit && valid) dispatcher("save", mol);
   }
 
   let depts = [];
   let posts = [];
+
 
   onMount(async x => {
     let q = await fetch(`/api/mols/depts`);
     depts = await q.json();
     q = await fetch(`/api/mols/posts`);
     posts = await q.json();
+
+
   });
 
 
+  
 
-  let weekId = null, periodId = 201202;
 </script>
 
-<form on:submit|preventDefault={save}>
+<form on:submit|preventDefault={save} on:reset={e => alert()} id="commonForm">
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <input required  class="form-control" use:bindDate bind:value={mol.BIRTHDAY}>
+      <div>{mol.BIRTHDAY}</div>
+    </div>
+  </div>
+
+
+
   <div class="form-row">
     <div class="form-group col-md-4">
       <TextField text="Фамилия" required bind:value={mol.SURNAME} />
@@ -60,17 +67,29 @@
       <PickerField text="Отдел" list={depts} bind:value={mol.DDEPT_ID} required/>
     </div>
     <div class="form-group col-md-4">
-      <PickerField text="Должность" list={posts} bind:value={mol.POST_ID} required/>
+      <PickerField text="Должность" list={posts} bind:value={mol.POST_ID}/>
     </div>
     <div class="form-group col-md-3">
-        <DateField text="Д.р" bind:value={mol.BIRTHDAY} required></DateField>
+        <DateField text="Д.р" bind:value={mol.BIRTHDAY}></DateField>
     </div>
   </div>
+
   
+
   <button
     type="submit"
-    class:disabled={!$reglament.allowEdit || !valid}
+    class:disabled={!$reglament.allowEdit}
     class="btn btn-primary">
     Сохранить
   </button>
+  
+  <button
+    type="reset"
+    class="btn btn-outline-secondary">
+    Отменить
+  </button>
+
+
 </form>
+
+
