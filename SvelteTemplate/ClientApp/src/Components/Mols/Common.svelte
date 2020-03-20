@@ -36,13 +36,6 @@
 </script>
 
 <form on:submit|preventDefault={save} on:reset={e => alert()} id="commonForm">
-  <div class="form-row">
-    <div class="form-group col-md-3">
-      <input required  class="form-control" use:bindDate bind:value={mol.BIRTHDAY}>
-      <div>{mol.BIRTHDAY}</div>
-    </div>
-  </div>
-
 
 
   <div class="form-row">

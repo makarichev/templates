@@ -32,7 +32,7 @@
 
   import { onMount, onDestroy } from "svelte";
   import { reglament } from "../../store.js";
-  import { asDate } from '../../Shared/Actions.js';
+  import {asDate} from '../../Shared/Actions.js';
 
   let apply = e => filter.set({ ..._filter, page: 1 });
   let sorted = e => ($filter.sort = e.detail);

@@ -3,7 +3,9 @@
   import { user } from "../store.js";
   import { createEventDispatcher } from "svelte";
   import Modal from "./Modal.svelte";
-  const dispatch = createEventDispatcher();
+  import {asRouterLink} from './Actions.js';
+
+const dispatch = createEventDispatcher();
 
   export let filter = null;
 
@@ -47,10 +49,10 @@
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item">
-        <a class="nav-link" href="/about">About</a>
+        <a use:asRouterLink class="nav-link" href="/about">About</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/mols">Пользователи</a>
+        <a use:asRouterLink={"active"} class="nav-link" href="/mols">Пользователи</a>
       </li>
 
       <li class="nav-item dropdown">

@@ -1,14 +1,27 @@
+import {route} from '../store'
 import moment from 'moment'
-import { bind, assign, set_data } from 'svelte/internal'
+import { bind, assign, set_data, current_component, set_input_value, getContext  } from 'svelte/internal'
 
 export function asDate(node, value) {
-    return {
-
-        update: function(newValue) {
-            node.innerHTML = newValue? moment(newValue).format('DD.MM.YYYY'): ''
-        }
+    
+    let update = x => {
+        node.innerHTML = x? moment(x).format('DD.MM.YYYY'): '';
     }
 
+    return {
+        update: update
+    }
+
+}
+
+export function asRouterLink(node, className) {
+
+    let unsubs = route.subscribe(x => {
+        node.classList.toggle(className || "active", x.path.startsWith(node.getAttribute("href")));        
+    })
+    return {
+        destroy: unsubs
+    }
 }
 
 export function selectTextOnFocus(node) {
@@ -26,40 +39,34 @@ export function selectTextOnFocus(node) {
     }
   }
 
-export function bindDate(node) {
-    
+export function bindDate(node, value) {
+
 
     node.type = "date";
+    node.date = null
+    
 
     //node.value = moment(value).format('YYYY-MM-DD');
 
-    function update (newValue) {
-        console.log(newValue);
-        value = newValue;
-        // value = moment(newValue).format('YYYY-MM-DD');
-        // node.value = moment(newValue).format('YYYY-MM-DD')
+    let update =  (x) =>  {
+        let stringValue = x? moment(x).format('YYYY-MM-DD'): null;
+        console.log(stringValue)
+        node.value = stringValue
     };
 
-    function onChange(e) {
-        
-        //let d = moment(e.target.value).format('YYYY-MM-DDT00:00:00')
-        //set_data(d, value)
-        //assign(current_component, value, moment(e.target.value).format('YYYY-MM-DDT00:00:00'))
-        // let _value = e.target.value
-        // //node.value = moment(value).format('YYYY-MM-DDT00:00:00')
-
-        //update(moment(e.target.value).format('YYYY-MM-DDT00:00:00'));
-        // //node.value = moment(value).format('YYYY-MM-DDT00:00:00')
-        console.log(moment(e.target.value).format('YYYY-MM-DDT00:00:00'))
-        
-        e.stopPropagation()
-        //e.target.value = moment(e.target.value).format('YYYY-MM-DDT00:00:00')
-    
+    let onChange = (e) => {
+        let dateValue = e.target.value? moment(e.target.value).format('YYYY-MM-DDT00:00:00'): null;
+        console.log(dateValue)
+        value = dateValue;
+        //set_data(e.target, '111');
     }
 
-    node.addEventListener('input', onChange )
+    node.addEventListener('change', onChange )
+    //update(value)
+
 
     return {
+        update: update,
         destroy: () => {
             node.removeEventListener('mousedown', onChange);
         }
