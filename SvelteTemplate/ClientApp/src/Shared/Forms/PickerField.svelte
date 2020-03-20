@@ -25,6 +25,7 @@
 
 <label for="input{text}">{text}:</label>
 <input
+  {required}
   on:change={changed}
   value={selectedText}
   type="search"
@@ -40,9 +41,7 @@
     <option value={itemText(item)}>{itemValue(item)}</option>
   {/each}
 </datalist>
+
 {#if value !== null}
 <small class="text-muted">{value}</small>
-{/if}
-{#if required && value === null}
-  <small class="text-danger">Обязательно для заполнения</small>
 {/if}

@@ -18,32 +18,32 @@ namespace svelte
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddBuildingBlocks()
+                .AddCispAuthentication()
+                ;
 
-
-            //services.AddBuildingBlocks()
-            //    .AddCispAuthentication();
             
             
-
-            services.AddHttpContextAccessor();
 
             services.AddTransient<SqlConnection>(x => new SqlConnection(Configuration["SqlConnectionString"]));
 
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
+            services.AddControllers();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/public";
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -51,7 +51,6 @@ namespace svelte
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -65,7 +64,6 @@ namespace svelte
 
             app.UseRouting();
 
-
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
@@ -77,16 +75,11 @@ namespace svelte
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment())
                 {
 
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                    //spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }

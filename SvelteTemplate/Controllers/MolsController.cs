@@ -44,8 +44,8 @@ namespace svelte.Controllers
                         , d.name as DEPT_NAME
                         , p.name as POST_NAME
 	                from mols s (nolock)
-                        inner join depts d on d.dept_id = s.ddept_id    
-                        inner join mols_posts p on p.post_id = s.post_id
+                        left join depts d on d.dept_id = s.ddept_id    
+                        left join mols_posts p on p.post_id = s.post_id
 	                where s.is_working = 1
                         and (@search is null or s.name like @search + '%')
                         and (@date is null or s.DATE_HIRE <= @date)
@@ -103,30 +103,31 @@ namespace svelte.Controllers
         }
 
         [HttpGet("posts")]
-        public async Task<ActionResult<object>> PostsAsync()
+        public async Task<object> PostsAsync()
         {
-            return Ok(
-                (await dapper.QueryAsync(@"
+                return await dapper.QueryAsync(@"
                     SELECT POST_ID, NAME FROM MOLS_POSTS ORDER BY NAME
-                "))
-                );
+                ");
         }
 
 
         [HttpGet("{id}/hist")]
-        public async Task<ActionResult<object>> HistAsync(int id)
+        public async Task<object> HistAsync(int id)
         {
-            return Ok(
-                (await dapper.QueryAsync(@"
+            return await dapper.QueryAsync(@"
                     select m.*, p.name as POST_NAME, d.name as DEPT_NAME
                     from MOLS_POSTS_HIST m
                         inner join mols_posts p on p.post_id = m.post_id
                         inner join depts d on d.dept_id = m.dept_id
                     where m.mol_id = @id
-                ", new { id}))
-                );
+                ", new { id})
+                ;
         }
+
+
+
     }
+
 
 
     public class MolsFilter {

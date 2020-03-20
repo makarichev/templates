@@ -22,7 +22,7 @@ setContext('name', name);
 
 
 <svelte:head>
-  <title>{name}</title>
+  <title>SvelteTemplate</title>
 </svelte:head>
 
 {#if component}

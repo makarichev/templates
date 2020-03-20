@@ -3,12 +3,11 @@
   import { user } from "../store.js";
   import { createEventDispatcher } from "svelte";
   import Modal from "./Modal.svelte";
-  const dispatch = createEventDispatcher();
+  import {asRouterLink} from './Actions.js';
+
+const dispatch = createEventDispatcher();
 
   export let filter = null;
-
-  let name = getContext("name");
-
 
 
   let filterShow = false;
@@ -18,6 +17,7 @@
   };
 
   let showUser = false;
+  let cispUrl = `${window.location.protocol}//${window.location.hostname}`
   let loginUrl = `${window.location.protocol}//${window.location.hostname}/login?ReturnUrl=${window.location.href}`;
 
   let dev;
@@ -34,27 +34,25 @@
 </style>
 
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-  <a class="navbar-brand" href="/">{name}</a>
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="/navbarsExampleDefault"
-    aria-controls="navbarsExampleDefault"
-    aria-expanded="false"
-    aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon" />
-  </button>
+
+  <a class="navbar-brand" href={cispUrl} title="КИСП">
+    <img src="/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+  </a>
+
+
+  <a class="navbar-brand" href="/">
+    SvelteTemplate
+  </a>
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
 
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item">
-        <a class="nav-link" href="/about">About</a>
+        <a use:asRouterLink class="nav-link" href="/about">About</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/mols">Пользователи</a>
+        <a use:asRouterLink={"active"} class="nav-link" href="/mols">Пользователи</a>
       </li>
 
       <li class="nav-item dropdown">
@@ -132,7 +130,7 @@
       Фильтр
     </h5>
   </div>
-  <form id="filterForm" on:submit|preventDefault={apply} on:reset|preventDefault={apply}>
+  <form id="filterForm" on:submit|preventDefault={apply}>
     <slot name="filter" {filter} />
   </form>
 

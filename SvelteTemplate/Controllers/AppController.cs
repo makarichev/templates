@@ -22,10 +22,6 @@ namespace SvelteTemplate.Controllers
         }
 
 
-        [HttpGet("reglament")]
-        public ActionResult Reglament() {
-            return Ok(new { allowEdit = true});
-        }
 
     }
 }

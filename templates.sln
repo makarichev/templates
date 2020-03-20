@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SvelteTemplate", "SvelteTemplate\SvelteTemplate.csproj", "{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks", "..\Projects\Cisp.Core\BuildingBlocks\BuildingBlocks.csproj", "{2F5EEBA8-969F-4161-91D4-DBCC8350AE23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BBF9E16-053A-4D01-A196-F3BFBAD17D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F5EEBA8-969F-4161-91D4-DBCC8350AE23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F5EEBA8-969F-4161-91D4-DBCC8350AE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F5EEBA8-969F-4161-91D4-DBCC8350AE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F5EEBA8-969F-4161-91D4-DBCC8350AE23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

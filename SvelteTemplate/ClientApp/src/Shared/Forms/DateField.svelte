@@ -1,7 +1,7 @@
 <script>
     import moment from 'moment'
     export let text = "Поле"
-    export let required = false;
+    export let required;
     export let className = "form-control"
     export let value = null;
 
@@ -15,6 +15,7 @@
 
 <label for="input{text}">{text}:</label>
 <input
+  {required}
   value = {innerValue}
   on:change={change}
   type="date"
@@ -22,6 +23,3 @@
   id="input{text}" 
   />
 
-{#if required && !value}
-  <small class="text-danger">Обязательно для заполнения</small>
-{/if}

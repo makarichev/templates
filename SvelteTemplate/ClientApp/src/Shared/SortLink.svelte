@@ -4,19 +4,25 @@
     const dispatch = createEventDispatcher();
 
     export let name = null;
-    
     export let sort = null;
 
     function onSorted() {
+        let asc = "ASC";
+        if (sortname === name)
+            asc = sortasc === "ASC"? "DESC": "ASC"
+        
         dispatch('sorted', `${name} ${asc}`);
     }
     
-    let sortname = name, asc = "ASC"
+    let sortname = name, sortasc = "ASC"
 
     $: {
-        let current = sort.split(' ')
-        sortname = current[0];
-        if (current.length > 1) asc = current[1];
+        if (sort && name) {
+            let current = sort.split(' ')
+            if (current[0]) sortname = current[0];
+            if (current.length > 1) sortasc = current[1]; else sortasc = "ASC"
+        }
+        
     }
 
 </script>
@@ -27,14 +33,14 @@
 
 <a href="/" on:click|preventDefault={onSorted}>
     <slot></slot>
-    <!-- {#if sortname === name} 
-        {#if asc === 'DESC'}
+    {#if sortname === name} 
+        {#if sortasc === 'DESC'}
         <i class="fa fa-chevron-up"></i>
         {:else}
         <i class="fa fa-chevron-down"></i>
         {/if}
-    {/if} -->
-    {asc}
+    {/if}
+    
 </a>
 
 
