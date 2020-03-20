@@ -48,12 +48,17 @@
     data = await q.json();
   });
   onDestroy(unsubscribe);
+
+
+  
+
 </script>
 
 <Layout filter={_filter} on:apply={apply}>
   <div class="container">
 
     <h5>Сотрудники.</h5>
+    
 
     <table class="table table-striped table-sm">
       <thead>
