@@ -1,40 +1,42 @@
 <script>
-    import Layout from '../../Shared/Layout.svelte'
-    import Edit from './Common.svelte'
+  import Layout from "../../Shared/Layout.svelte";
+  import Common from "./Common.svelte";
+  import page from "page";
+  import {asLoader} from "../../Shared/Actions.js";
 
-    let mol = {}
+  let mol = {};
+  let loading = false;
+  let save = async x => {
+      loading = true
+      let q = await fetch(`/api/mols/insert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(x)
+      });
+      let newMol = await q.json()
+      loading = false
+      page(`/mols/${newMol.MOL_ID}`);
+
+  };
 </script>
 
 <Layout>
   <div class="container">
-    <div class="row">
-
-      <div class="col-3">
 
 
-        <div class="list-group shadow">
-          <button
-            type="button"
-            class="list-group-item list-group-item-action active"
-            >
-            Основные данные
-          </button>
-        </div>
-      </div>
-      <div class="col-9">
         <div class="card shadow">
           <div class="card-header">
             <h5>Новый сотрудник</h5>
           </div>
           <div class="card-body">
 
-            <Edit {mol} on:save={x => alert()}></Edit>
+            <Common {mol} {save} {loading} />
 
           </div>
         </div>
-      </div>
 
-    </div>
+
+
   </div>
 </Layout>
 

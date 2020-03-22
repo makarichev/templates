@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace svelte
 {
@@ -22,9 +24,9 @@ namespace svelte
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddBuildingBlocks()
-                .AddCispAuthentication()
-                ;
+            //services.AddBuildingBlocks()
+            //    .AddCispAuthentication()
+            //    ;
 
             
             
