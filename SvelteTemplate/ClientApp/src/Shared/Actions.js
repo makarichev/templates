@@ -56,6 +56,8 @@ export function asLoader(node, loading) {
             node.removeEventListener('click', handleClick)
         } catch (error) {}
     }
+
+    setLoading(loading)
     
     return {
         update: setLoading,

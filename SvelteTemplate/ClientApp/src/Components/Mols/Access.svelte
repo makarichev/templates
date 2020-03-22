@@ -12,12 +12,14 @@
   let audiences = [];
 
   let loadAudiences = async x => {
+      loading = true;
     try {
       let r = await fetch(`/api/mols/${mol.MOL_ID}/audiences`);
       audiences = await r.json();
     } catch (error) {
       alert(error);
     }
+    loading = false;
   };
 
   $: count = audiences.filter(x => x.IS_CHECKED).length;
@@ -130,7 +132,9 @@
       <button
         on:click={x => (filtered = !filtered)}
         type="button"
-        class="btn btn-link btn-sm">
+        class="btn btn-link btn-sm"
+        use:asLoader={loading}
+        >
         Права доступа ({count})
       </button>
 

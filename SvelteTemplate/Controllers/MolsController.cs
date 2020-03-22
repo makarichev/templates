@@ -137,6 +137,7 @@ namespace svelte.Controllers
         [HttpGet("{id}/audiences")]
         public async Task<object> AudiencesAsync(int id)
         {
+
             return await dapper.QueryAsync(@"
                 select 
 	                a.AUDIENCE_ID, a.NAME, a.DESCRIPTION
