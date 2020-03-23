@@ -24,6 +24,60 @@ export function asRouterLink(node, className) {
     }
 }
 
+
+export function asSortLink(node, sort) {
+    return {
+    }
+}
+
+
+
+export function asLoader(node, loading) {
+    
+
+    let spinner = document.createElement('i');
+    spinner.classList.add('fa');
+    spinner.classList.add('fa-circle-o-notch');
+    spinner.classList.add('fa-spin');
+
+    spinner.classList.add('ml-2');
+
+    let handleClick = e => {e.stopPropagation(); e.preventDefault()}
+
+    let setLoading = x => {
+        if (x) {
+            node.appendChild(spinner)
+            node.classList.add('disabled')
+            node.addEventListener('click', handleClick)
+        }
+        else try {
+            node.removeChild(spinner)
+            node.classList.remove('disabled')
+            node.removeEventListener('click', handleClick)
+        } catch (error) {}
+    }
+
+    setLoading(loading)
+    
+    return {
+        update: setLoading,
+        destroy: x => {}
+    }
+
+}
+
+export function validate(node, test) {
+
+    let setValidate = x => {
+        node.setCustomValidity(x?(node.getAttribute('message') || '?'):'');
+    }
+
+    setValidate(test);
+
+    return {
+        update: setValidate
+    }
+}
 export function selectTextOnFocus(node) {
   
     const handleFocus = event => {

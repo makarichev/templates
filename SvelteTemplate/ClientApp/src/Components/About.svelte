@@ -1,24 +1,25 @@
 
 <script>
     import Layout from '../Shared/Layout.svelte'
-    import {user, reglament} from '../store'
-
-    
+    import {user, reglament} from '../store.js'
 </script>
 
 <Layout>
     <div class="container">
-        <h5>user</h5>
+        ABOUT
+
+        <p>
+            {JSON.stringify(process.env)}
+        </p>
+
         <p>
             {JSON.stringify($user)}
         </p>
 
-        <h5>reglament</h5>
         <p>
             {JSON.stringify($reglament)}
         </p>
 
     </div>
-
 
 </Layout>

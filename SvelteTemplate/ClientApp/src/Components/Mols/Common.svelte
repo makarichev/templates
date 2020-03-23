@@ -1,7 +1,7 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount, onDestroy, createEventDispatcher, getContext } from "svelte";
   import { reglament } from "../../store.js";
-  import {bindDate, asDate, selectTextOnFocus} from "../../Shared/Actions.js";
+  import {asDate, asLoader} from "../../Shared/Actions.js";
   import TextField from "../../Shared/Forms/TextField.svelte";
   import DateField from "../../Shared/Forms/DateField.svelte";
   import WeekField from "../../Shared/Forms/WeekField.svelte";
@@ -12,30 +12,22 @@
   export let mol = {};
 
   
-  function save() {
-    console.log(mol)
-    //if ($reglament.alloEdit && valid) dispatcher("save", mol);
-  }
+  export let save = null;
 
-  let depts = [];
-  let posts = [];
+  export let depts = [];
+  export let posts = [];
+  export let loading;
 
 
-  onMount(async x => {
-    let q = await fetch(`/api/mols/depts`);
-    depts = await q.json();
-    q = await fetch(`/api/mols/posts`);
-    posts = await q.json();
-
-
-  });
-
+  onDestroy(x => {
+    //if (confirm("Есть изменения")) save(mol);
+  })
 
   
 
 </script>
 
-<form on:submit|preventDefault={save} on:reset={e => alert()} id="commonForm">
+<form on:submit|preventDefault={x => save(mol)} on:reset={e => alert()} id="commonForm">
 
 
   <div class="form-row">
@@ -70,17 +62,14 @@
   
 
   <button
+    use:asLoader={loading}
     type="submit"
     class:disabled={!$reglament.allowEdit}
     class="btn btn-primary">
     Сохранить
   </button>
   
-  <button
-    type="reset"
-    class="btn btn-outline-secondary">
-    Отменить
-  </button>
+  
 
 
 </form>
