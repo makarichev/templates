@@ -1,12 +1,14 @@
 <script>
   import { onMount, createEventDispatcher, getContext } from "svelte";
-  import { reglament } from "../../store.js";
   import TextField from "../../Shared/Forms/TextField.svelte";
   import PickerField from "../../Shared/Forms/PickerField.svelte";
 
   let dispatcher = createEventDispatcher();
   export let mol = null;
 
+  export let depts = [];
+  export let posts = [];
+  export let loading = false;
 
 
   export let save = null;

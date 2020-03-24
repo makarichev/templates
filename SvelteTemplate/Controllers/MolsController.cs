@@ -47,12 +47,13 @@ namespace svelte.Controllers
                 ;with s as (
 	                select 
                         s.MOL_ID, s.NAME, s.NAME_LOGON, s.EMAIL, s.PHONE_LOCAL, s.DATE_HIRE
+                        , s.IS_WORKING
                         , d.name as DEPT_NAME
                         , p.name as POST_NAME
 	                from mols s (nolock)
                         left join depts d on d.dept_id = s.ddept_id    
                         left join mols_posts p on p.post_id = s.post_id
-	                where s.is_working = 1
+	                where 0 = 0 --s.is_working = 1
                         and (@search is null or s.name like @search + '%')
                         and (@date is null or s.DATE_HIRE <= @date)
                         and (@deptid is null or s.ddept_id = @deptid)
@@ -105,7 +106,7 @@ namespace svelte.Controllers
                 (await dapper.QueryAsync(@"
                     select DEPT_ID, NAME from depts 
                     WHERE IS_DELETED = 0
-                    AND EXISTS(SELECT 1 FROM MOLS WHERE IS_WORKING = 1 AND DDEPT_ID = DEPTS.DEPT_ID)
+                    AND EXISTS(SELECT 1 FROM MOLS WHERE DDEPT_ID = DEPTS.DEPT_ID)
                     order by name;
                 "))
                 );

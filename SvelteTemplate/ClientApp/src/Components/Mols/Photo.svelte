@@ -16,11 +16,13 @@
 </script>
 
 {#if mol.PHOTO_IMAGE}
-  <img
-    width="100%"
-    class="mb-3"
-    src="data:image/jpeg;base64, {mol.PHOTO_IMAGE}"
-    alt="" />
+
+    <img
+      width="100%"
+      class="mb-3"
+      src="data:image/jpeg;base64, {mol.PHOTO_IMAGE}"
+      alt="" />
+
 {/if}
 
 <form

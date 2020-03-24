@@ -1,31 +1,46 @@
 <script>
-  import { onMount, onDestroy, setContext } from "svelte";
-  import {user, reglament, route} from './store.js'
+  import { onMount, onDestroy, setContext, getContext } from "svelte";
+  import { user, reglament, route} from "./store.js";
+  import { asRouterLink } from "./Shared/actions.js";
+
+
+onMount(async x => {
+
+  let q = await fetch(`/api/user`)
+  user.set(await q.json());
+
+  q = await fetch(`/api/user/reglament`)
+  reglament.set(await q.json());
+
+})
+
+
+  user.set();
+  reglament.set();
   
-	let s1 = user.subscribe(x => {})
-	let s2 = reglament.subscribe(x => {})
-	onDestroy(s1)
-	onDestroy(s2)
+  export let components = [];
+
 
 
   
-export let name;
-export let component;
-
-setContext('name', name);
-
-	
+  
+  setContext("name", 'Template');
+  setContext("filter", null);
 
 
 </script>
 
-
-
 <svelte:head>
-  <title>SvelteTemplate</title>
+  <title>{getContext("name")}</title>
 </svelte:head>
 
-{#if component}
-	<svelte:component this={component}></svelte:component>
+{#if components}
+  <svelte:component
+    this={components[0]}
+    components={components.slice(1)}
+    />
 {/if}
+
+
+
 
