@@ -1,6 +1,7 @@
 <script>
     import {onMount, onDestroy} from 'svelte'
     import {toAsts} from '../store'
+    import {asDate} from './actions.js'
    
 
     let messages = [];
@@ -13,7 +14,7 @@
                     .on('hidden.bs.toast', function (e) {
                         setTimeout(() => messages = messages.filter(m => m.id !== x.id), 100)
                     })
-                    .toast({delay:(x.delay||5000), autohide: (x.autohide || true)})
+                    .toast({delay:x.delay, autohide: x.autohide})
                     .toast('show')
             , 100);      
         }
@@ -42,7 +43,7 @@
             class:fa-info-circle={item.type == 0 || item.type == 3}
             class:fa-exclamation-circle={item.type == 1 || item.type == 2}
         aria-hidden="true"></i></strong>
-        <small class="mr-2">just now #{item.id}</small>
+        <small class="mr-2" use:asDate={item.date}></small>
         <i style="cursor:pointer" class="fa fa-close" data-dismiss="toast"></i>
       </div>
       <div class="toast-body">

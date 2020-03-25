@@ -1,6 +1,6 @@
 <script>
   import { onMount, onDestroy, setContext, getContext } from "svelte";
-  import { user, reglament, route} from "./store.js";
+  import { user, reglament, route, socket, toAsts} from "./store.js";
   import { asRouterLink } from "./Shared/actions.js";
 
 
@@ -9,7 +9,13 @@ import Toast from './Shared/Toast.svelte'
   
   export let components = [];
 
-  
+  let s = socket.subscribe(x => {
+	console.log('message', x)
+
+	  if (x) toAsts.warning(x)}
+	)
+  onDestroy(s);
+
   
   setContext("name", 'Template');
   setContext("filter", null);

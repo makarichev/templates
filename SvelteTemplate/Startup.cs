@@ -64,7 +64,12 @@ namespace svelte
                 app.UseSpaStaticFiles();
             }
 
+            
+            
             app.UseRouting();
+
+            app.UseWebSockets();
+
 
             app.UseAuthentication();
 

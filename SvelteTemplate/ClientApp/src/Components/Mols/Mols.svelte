@@ -13,7 +13,7 @@
 
   import { asDate, asSortLink } from "../../Shared/Actions.js";
 
-  import { route, reglament, toAsts } from "../../store";
+  import { route, reglament, toAsts, socket } from "../../store";
 
   let apply = e => filter.set({ ..._filter, page: 1 });
   let sorted = e => ($filter.sort = e.detail);
@@ -174,16 +174,23 @@
       <a
         class="dropdown-item"
         href="/mols/new"
-        on:click|preventDefault={x => toAsts.send({message: 'Привет'})}
+        on:click|preventDefault={x => toAsts.message('Привет')}
         class:disabled={!$reglament.allowEdit}>
         Привет
       </a>
       <a
         class="dropdown-item"
         href="/mols/new"
-        on:click|preventDefault={x => toAsts.send({message: 'И тебе привет'})}
+        on:click|preventDefault={x => toAsts.error('И тебе привет')}
         class:disabled={!$reglament.allowEdit}>
         И тебе привет
+      </a>
+      <a
+        class="dropdown-item"
+        href="/mols/new"
+        on:click|preventDefault={x => socket.send('Sent to socket')}
+        class:disabled={!$reglament.allowEdit}>
+        Sent to socket
       </a>
     {/if}
   </div>

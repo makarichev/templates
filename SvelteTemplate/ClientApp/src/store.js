@@ -18,14 +18,43 @@ export const user = readable({}, set => {
 function createToasts() {
   const { subscribe, set, update } = writable(null);
   let id = 0;
-  let send = m => set({type:0, ...m, id: id++})
+  let send = m => set({type:0, delay: 5000, autohide: true, ...m, id: id++, date: new Date()})
 	return {
 		subscribe,
     send: send,
-    erorr: (str) => send({message: str, type: 1}),
+    'error': (str) => send({message: str, type: 1}),
     message: (str) => send({message: str, type: 0}),
     warning: (str) => send({message: str, type: 2}),
     success: (str) => send({message: str, type: 3}),
 	};
 }
 export const toAsts = createToasts();
+
+
+
+
+function createSocket() {
+
+  let socket;
+  const { subscribe } = readable(null, set => {
+    let _set = set
+    socket = new WebSocket(`ws://${window.location.host}/api/mols/connect`)
+    socket.onclose = function(x) {console.log('CLOSE', x)}
+    socket.onopen = x =>   console.log('OPEN', x)
+    socket.onmessage = x=> {
+      _set(x.data);
+      console.log('MESSAGE', x.data, _set); 
+    }
+    socket.onerror = x  => console.error('ERROR', x.message)
+  
+    return function stop() { 
+      socket.close(1000, "работа закончена"); 
+    }
+  
+  });
+  
+  return {subscribe, send: (x) => socket.send(x)};
+}
+
+
+export const socket = createSocket();

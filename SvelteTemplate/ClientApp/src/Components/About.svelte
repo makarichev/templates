@@ -2,7 +2,7 @@
 <script>
     import Layout from '../Layout.svelte'
     import {user, reglament} from '../store.js'
-    import {onMount, setContext, getContext} from 'svelte'
+    import {onMount, onDestroy, setContext, getContext} from 'svelte'
     import Filter from './Mols/Filter.svelte'
     
 

@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Z.Dapper.Plus;
 using System.Text;
 using System.IO;
+using System.Threading;
 
 namespace svelte.Controllers
 {
@@ -53,7 +54,7 @@ namespace svelte.Controllers
 	                from mols s (nolock)
                         left join depts d on d.dept_id = s.ddept_id    
                         left join mols_posts p on p.post_id = s.post_id
-	                where 0 = 0 --s.is_working = 1
+	                where s.is_working = 1
                         and (@search is null or s.name like @search + '%')
                         and (@date is null or s.DATE_HIRE <= @date)
                         and (@deptid is null or s.ddept_id = @deptid)
@@ -230,6 +231,38 @@ namespace svelte.Controllers
             return Ok(dapper.Query<string>(@"
                 SELECT convert(varchar(34), HASHBYTES('MD5',@password),1) as SQL_PASSWORD
             ", new { password }).First());
+
+        }
+
+
+
+
+        [HttpGet("connect")]
+        public async Task ConnectAsync()
+        {
+
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                var ws = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                _logger.LogWarning("socket.open");
+                await ws.SendAsync(Encoding.UTF8.GetBytes("Привет"), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None);
+
+
+
+                var buffer = new byte[2048 * 2];
+                var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                _logger.LogWarning($"received {Encoding.UTF8.GetString(buffer)}");
+
+                while (!ws.CloseStatus.HasValue)
+                {
+                    await ws.SendAsync(Encoding.UTF8.GetBytes("Привет"), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None);
+                    result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                    _logger.LogWarning($"received {Encoding.UTF8.GetString(buffer)}");
+                }
+
+                _logger.LogWarning("socket.close");
+                await ws.CloseAsync(ws.CloseStatus.Value, ws.CloseStatusDescription, CancellationToken.None);
+            }
 
         }
 
