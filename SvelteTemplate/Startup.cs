@@ -24,9 +24,9 @@ namespace svelte
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //services.AddBuildingBlocks()
-            //    .AddCispAuthentication()
-            //    ;
+            services.AddBuildingBlocks()
+                .AddCispAuthentication()
+                ;
 
             
             
@@ -64,7 +64,12 @@ namespace svelte
                 app.UseSpaStaticFiles();
             }
 
+            
+            
             app.UseRouting();
+
+            app.UseWebSockets();
+
 
             app.UseAuthentication();
 

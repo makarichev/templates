@@ -2,7 +2,9 @@
   import { onMount } from "svelte";
   import TextField from "../../Shared/Forms/TextField.svelte";
   import PickerField from "../../Shared/Forms/PickerField.svelte";
-  export let filter;
+  
+  
+  export let filter = {search: null};
 
   let depts = [];
   let posts = [];
@@ -13,6 +15,9 @@
     q = await fetch(`/api/mols/posts`);
     posts = await q.json();
   });
+
+  $: selectedItem = depts.find(x => x.DEPT_ID == filter.deptId)
+
 </script>
 
 
@@ -29,11 +34,22 @@
       placeholder="Дата" />
 </div>
 
-<div class="form-group">
+<!-- <div class="form-group">
     <PickerField text="Отдел" bind:value={filter.deptId} list={depts}></PickerField>
+</div> -->
+
+<div class="form-group">
+    <label>Код отдела:</label>
+    <input type="search" bind:value={filter.deptId} list="deptsList" class="form-control" />
+    <datalist id="deptsList">
+      {#each depts as dept}
+        <option value="{dept.DEPT_ID}">{dept.NAME}</option>
+      {/each}
+    </datalist>
+    {#if selectedItem}<small class="text-primary">{selectedItem.NAME}</small>{/if}
+
 </div>
 
 <div class="form-group">
     <PickerField text="Должность" bind:value={filter.postId} list={posts}></PickerField>
 </div>
-

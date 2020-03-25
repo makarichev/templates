@@ -1,5 +1,5 @@
 <script>
-  import Layout from "../../Shared/Layout.svelte";
+  import Layout from "../../Layout.svelte";
   import Common from "./Common.svelte";
   import page from "page";
   import {asLoader} from "../../Shared/Actions.js";

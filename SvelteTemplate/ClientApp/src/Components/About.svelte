@@ -1,16 +1,22 @@
 
 <script>
-    import Layout from '../Shared/Layout.svelte'
+    import Layout from '../Layout.svelte'
     import {user, reglament} from '../store.js'
+    import {onMount, onDestroy, setContext, getContext} from 'svelte'
+    import Filter from './Mols/Filter.svelte'
+    
+
+    
+    
+
 </script>
+
+
+
 
 <Layout>
     <div class="container">
         ABOUT
-
-        <p>
-            {JSON.stringify(process.env)}
-        </p>
 
         <p>
             {JSON.stringify($user)}
@@ -20,6 +26,11 @@
             {JSON.stringify($reglament)}
         </p>
 
+        {getContext('name')}
+
+        
+
     </div>
 
 </Layout>
+

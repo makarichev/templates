@@ -17,6 +17,8 @@ export function asDate(node, value) {
 export function asRouterLink(node, className) {
 
     let unsubs = route.subscribe(x => {
+
+        
         node.classList.toggle(className || "active", x.path.startsWith(node.getAttribute("href")));        
     })
     return {

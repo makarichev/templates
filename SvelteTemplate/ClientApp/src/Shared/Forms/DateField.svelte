@@ -1,7 +1,7 @@
 <script>
     import moment from 'moment'
     export let text = "Поле"
-    export let required;
+    export let required = false;
     export let className = "form-control"
     export let value = null;
 

@@ -1,14 +1,18 @@
 <script>
   import { getContext } from "svelte";
-  import { user } from "../store.js";
+  import { user } from "./store.js";
   import { createEventDispatcher } from "svelte";
-  import Modal from "./Modal.svelte";
-  import {asRouterLink} from './Actions.js';
+  import Modal from "./Shared/Modal.svelte";
+  import { asRouterLink } from "./Shared/Actions.js";
 
-const dispatch = createEventDispatcher();
 
+  
+
+  const dispatch = createEventDispatcher();
+  let currentUser = $user
+  
+  
   export let filter = null;
-
 
   let filterShow = false;
   let apply = () => {
@@ -17,7 +21,7 @@ const dispatch = createEventDispatcher();
   };
 
   let showUser = false;
-  let cispUrl = `${window.location.protocol}//${window.location.hostname}`
+  let cispUrl = `${window.location.protocol}//${window.location.hostname}`;
   let loginUrl = `${window.location.protocol}//${window.location.hostname}/login?ReturnUrl=${window.location.href}`;
 
   let dev;
@@ -36,13 +40,15 @@ const dispatch = createEventDispatcher();
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
 
   <a class="navbar-brand" href={cispUrl} title="КИСП">
-    <img src="/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    <img
+      src="/favicon.png"
+      width="30"
+      height="30"
+      class="d-inline-block align-top"
+      alt="" />
   </a>
 
-
-  <a class="navbar-brand" href="/">
-    SvelteTemplate
-  </a>
+  <a class="navbar-brand" href="/">{getContext('name')}</a>
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
 
@@ -52,7 +58,9 @@ const dispatch = createEventDispatcher();
         <a use:asRouterLink class="nav-link" href="/about">About</a>
       </li>
       <li class="nav-item">
-        <a use:asRouterLink={"active"} class="nav-link" href="/mols">Пользователи</a>
+        <a use:asRouterLink={'active'} class="nav-link" href="/mols">
+          Сотрудники
+        </a>
       </li>
 
       <li class="nav-item dropdown">
@@ -73,7 +81,6 @@ const dispatch = createEventDispatcher();
     {#if filter}
       <form class="form-inline" on:submit|preventDefault={apply}>
         <div class="input-group">
-          {#if filter.search !== undefined}
             <input
               class="form-control"
               type="search"
@@ -84,7 +91,6 @@ const dispatch = createEventDispatcher();
                 <i class="fa fa-search" />
               </button>
             </div>
-          {/if}
           <div class="input-group-append" id="button-addon4">
             <button
               class="btn btn-outline-secondary"
@@ -93,14 +99,12 @@ const dispatch = createEventDispatcher();
               <i class="fa fa-filter" />
             </button>
           </div>
-
         </div>
-
       </form>
     {/if}
 
     <a href={loginUrl} class="ml-4">
-      {#if $user.name}
+      {#if $user && $user.name}
         <img
           src="https://cisp.ssnab.ru/Files/MolsPhotos/w80/{$user.mol_id}.jpg"
           alt={$user.name}

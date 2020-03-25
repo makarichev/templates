@@ -1,31 +1,41 @@
 <script>
-  import { onMount, onDestroy, setContext } from "svelte";
-  import {user, reglament, route} from './store.js'
-  
-	let s1 = user.subscribe(x => {})
-	let s2 = reglament.subscribe(x => {})
-	onDestroy(s1)
-	onDestroy(s2)
+  import { onMount, onDestroy, setContext, getContext } from "svelte";
+  import { user, reglament, route, socket, toAsts} from "./store.js";
+  import { asRouterLink } from "./Shared/actions.js";
 
+
+import Toast from './Shared/Toast.svelte'
 
   
-export let name;
-export let component;
+  export let components = [];
 
-setContext('name', name);
+  let s = socket.subscribe(x => {
+	console.log('message', x)
 
-	
+	  if (x) toAsts.warning(x)}
+	)
+  onDestroy(s);
+
+  
+  setContext("name", 'Template');
+  setContext("filter", null);
 
 
 </script>
 
-
-
 <svelte:head>
-  <title>SvelteTemplate</title>
+  <title>{getContext("name")}</title>
 </svelte:head>
 
-{#if component}
-	<svelte:component this={component}></svelte:component>
+{#if components}
+  <svelte:component
+    this={components[0]}
+    components={components.slice(1)}
+	reglament = {$reglament}
+	user = {$user}
+    />
 {/if}
+
+<Toast></Toast>
+
 
