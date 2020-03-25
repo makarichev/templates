@@ -50,8 +50,6 @@
 
 </div>
 
-
-
 <div class="form-group">
     <PickerField text="Должность" bind:value={filter.postId} list={posts}></PickerField>
 </div>

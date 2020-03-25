@@ -4,23 +4,10 @@
   import { asRouterLink } from "./Shared/actions.js";
 
 
-onMount(async x => {
+import Toast from './Shared/Toast.svelte'
 
-  let q = await fetch(`/api/user`)
-  user.set(await q.json());
-
-  q = await fetch(`/api/user/reglament`)
-  reglament.set(await q.json());
-
-})
-
-
-  user.set();
-  reglament.set();
   
   export let components = [];
-
-
 
   
   
@@ -38,9 +25,11 @@ onMount(async x => {
   <svelte:component
     this={components[0]}
     components={components.slice(1)}
+	reglament = {$reglament}
+	user = {$user}
     />
 {/if}
 
-
+<Toast></Toast>
 
 

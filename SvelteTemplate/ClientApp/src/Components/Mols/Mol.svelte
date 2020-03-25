@@ -5,7 +5,7 @@
 
 <script>
   import Layout from "../../Layout.svelte";
-  import { route } from "../../store.js";
+  import { route, toAsts } from "../../store.js";
   import { onMount, onDestroy } from "svelte";
   import { asLoader, asRouterLink } from "../../Shared/Actions.js";
 
@@ -33,7 +33,6 @@
 
   let save = async x => {
     loading = true;
-
     try {
       let q = await fetch(`/api/mols/${x.MOL_ID}`, {
         method: "post",
@@ -42,10 +41,11 @@
       });
       mol = await q.json();
     } catch (err) {
-      console.error(err);
+      toAsts.error(err);
     }
-
     loading = false;
+    toAsts.success("Запись сохранена");
+
   };
 
 
@@ -108,8 +108,16 @@
               <a class="dropdown-item" href="/mols/{molId}/education">
                 Обучение
               </a>
-            </div>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/mols/{molId}/education">
+                Обучение
+              </a>
+              <div class="dropdown-header" href="/mols/{molId}/education">
+                Обучение
+              </div>
           </li>
+
+
         </ul>
 
       </nav>

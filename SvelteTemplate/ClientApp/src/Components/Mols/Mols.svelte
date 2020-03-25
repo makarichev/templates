@@ -1,7 +1,6 @@
 <script context="module">
   import { writable } from "svelte/store";
   export const filter = writable({});
-
 </script>
 
 <script>
@@ -14,14 +13,15 @@
 
   import { asDate, asSortLink } from "../../Shared/Actions.js";
 
-  import { route, reglament } from "../../store";
+  import { route, reglament, toAsts } from "../../store";
 
   let apply = e => filter.set({ ..._filter, page: 1 });
   let sorted = e => ($filter.sort = e.detail);
   $: sort = $filter.sort;
 
-  let _filter = $filter,    data = [],    pager = {};
-
+  let _filter = $filter,
+    data = [],
+    pager = {};
 
   const unsubscribe = filter.subscribe(async x => {
     try {
@@ -36,7 +36,6 @@
   let loading = true;
 
   onDestroy(unsubscribe);
-
 </script>
 
 <style>
@@ -48,13 +47,13 @@
   .deleted td {
     text-decoration: line-through;
     opacity: 0.5;
-    }
+  }
 </style>
 
 <Layout filter={_filter} on:apply={apply}>
   <div class="container">
 
-<!-- 
+    <!-- 
     <nav class="navbar navbar-expand navbar-light bg-light shadow-sm mb-3 rounded">
       <div class="navbar-brand mr-auto">Сотрудники</div>
       <div class="nav navbar-nav">
@@ -72,59 +71,57 @@
       </div>
     </nav> -->
 
+    <table class="table table-sm table-striped table-hover shadow">
+      <thead>
+        <tr>
+          <th class="l">#</th>
+          <th />
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'MOL_ID'}>
+              Код
+            </button>
+          </th>
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'NAME'}>
+              Имя
+            </button>
+          </th>
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'MNAME_LOGON'}>
+              Логин
+            </button>
+          </th>
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'EMAIL'}>
+              Email
+            </button>
+          </th>
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'PHONE_LOCAL'}>
+              Тел
+            </button>
+          </th>
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'DEPT_NAME'}>
+              Отдел
+            </button>
+          </th>
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'POST_NAME'}>
+              Пост
+            </button>
+          </th>
+          <th>
+            <button class="btn btn-link btn-sm" use:asSortLink={'DATE_HIRE'}>
+              Дата
+            </button>
 
-    
+          </th>
+        </tr>
+      </thead>
 
-      <table class="table table-sm table-striped table-hover shadow">
-        <thead>
-          <tr>
-            <th class="l">#</th>
-            <th />
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'MOL_ID'}>
-                Код
-              </button>
-            </th>
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'NAME'}>
-                Имя
-              </button>
-            </th>
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'MNAME_LOGON'}>
-                Логин
-              </button>
-            </th>
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'EMAIL'}>
-                Email
-              </button>
-            </th>
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'PHONE_LOCAL'}>
-                Тел
-              </button>
-            </th>
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'DEPT_NAME'}>
-                Отдел
-              </button>
-            </th>
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'POST_NAME'}>
-                Пост
-              </button>
-            </th>
-            <th>
-              <button class="btn btn-link btn-sm" use:asSortLink={'DATE_HIRE'}>
-                Дата
-              </button>
-
-          </tr>
-        </thead>
-
-        <tbody>
-          {#each data as item, i}
+      <tbody>
+        {#each data as item, i}
           <tr class:deleted={!item.IS_WORKING}>
             <td class="l">{i + pager.offset + 1}</td>
             <td>
@@ -155,7 +152,6 @@
 
       </tbody>
     </table>
-  
 
     <div class="mb-3">
       <Pager {...pager} on:paged={e => ($filter.page = e.detail)} />
@@ -168,15 +164,28 @@
   </div>
 
   <div slot="actions">
-{#if $reglament}    
-              <a class="dropdown-item" href="/mols/new" class:disabled={!$reglament.allowEdit}>
-              Новый сотрудник
-            </a>
-{/if}  
-    </div>
+    {#if $reglament}
+      <a
+        class="dropdown-item"
+        href="/mols/new"
+        class:disabled={!$reglament.allowEdit}>
+        Новый сотрудник
+      </a>
+      <a
+        class="dropdown-item"
+        href="/mols/new"
+        on:click|preventDefault={x => toAsts.send({message: 'Привет'})}
+        class:disabled={!$reglament.allowEdit}>
+        Привет
+      </a>
+      <a
+        class="dropdown-item"
+        href="/mols/new"
+        on:click|preventDefault={x => toAsts.send({message: 'И тебе привет'})}
+        class:disabled={!$reglament.allowEdit}>
+        И тебе привет
+      </a>
+    {/if}
+  </div>
 
 </Layout>
-
-
-
-
