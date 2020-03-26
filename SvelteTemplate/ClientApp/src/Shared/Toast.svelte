@@ -10,9 +10,9 @@
         if (x) {
             messages = [...messages, x]
             setTimeout(y => 
-                window.$(`#t${x.id}`)
+                window.$(`#${x.date.valueOf()}`)
                     .on('hidden.bs.toast', function (e) {
-                        setTimeout(() => messages = messages.filter(m => m.id !== x.id), 100)
+                        setTimeout(() => messages = messages.filter(m => m.date.valueOf() !== e.target.id), 100)
                     })
                     .toast({delay:x.delay, autohide: x.autohide})
                     .toast('show')
@@ -31,7 +31,7 @@
     {#each messages as item}
 
     <!-- Then put toasts within -->
-    <div id="t{item.id}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="min-width:300px">
+    <div id="{item.date.valueOf()}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="min-width:300px">
       <div class="toast-header bg-primary text-light"
         class:bg-primary={item.type == 0}
         class:bg-danger={item.type == 1}

@@ -49,6 +49,19 @@
   };
 
 
+
+  let unwork = async x => {
+    try {
+      let q = await fetch(`/api/mols/unwork`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({molId: mol.MOL_ID})
+      });
+    } catch (err) {
+      toAsts.error(err);
+    }
+  };
+
   let comp = null;
   export let components;
 
@@ -109,8 +122,8 @@
                 Обучение
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/mols/{molId}/education">
-                Обучение
+              <a class="dropdown-item" href="/" on:click|preventDefault={unwork}>
+                Уволить
               </a>
               <div class="dropdown-header" href="/mols/{molId}/education">
                 Обучение

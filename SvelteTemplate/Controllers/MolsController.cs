@@ -13,6 +13,9 @@ using Z.Dapper.Plus;
 using System.Text;
 using System.IO;
 using System.Threading;
+using System.Reactive.Subjects;
+using System.Reactive.Linq;
+using SvelteTemplate;
 
 namespace svelte.Controllers
 {
@@ -22,11 +25,17 @@ namespace svelte.Controllers
     {
         private readonly ILogger<MolsController> _logger;
         private readonly SqlConnection dapper;
+        private readonly InnerBus innerBus;
 
-        public MolsController(ILogger<MolsController> logger, SqlConnection dapper)
+        public MolsController(
+            ILogger<MolsController> logger, 
+            SqlConnection dapper,
+            InnerBus innerBus
+            )
         {
             _logger = logger;
             this.dapper = dapper;
+            this.innerBus = innerBus;
         }
 
 
@@ -237,6 +246,15 @@ namespace svelte.Controllers
 
 
 
+        [HttpPost("unwork")]
+        public async Task<ActionResult<object>> UnworkRequest([FromBody] ActionUnworkRequest request)
+        {
+            await innerBus.SendAsync(request);
+            return Ok();
+        }
+
+
+
         [HttpGet("connect")]
         public async Task ConnectAsync()
         {
@@ -244,27 +262,27 @@ namespace svelte.Controllers
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 var ws = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                _logger.LogWarning("socket.open");
-                await ws.SendAsync(Encoding.UTF8.GetBytes("Привет"), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None);
 
-
+                var subscribe = innerBus.Subscribe<ActionClientMessage>(async x => {
+                        await ws.SendAsync(Encoding.UTF8.GetBytes(x.Text), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None);
+                });
 
                 var buffer = new byte[2048 * 2];
-                var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                _logger.LogWarning($"received {Encoding.UTF8.GetString(buffer)}");
-
                 while (!ws.CloseStatus.HasValue)
                 {
-                    await ws.SendAsync(Encoding.UTF8.GetBytes("Привет"), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None);
-                    result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                    _logger.LogWarning($"received {Encoding.UTF8.GetString(buffer)}");
+                    var result = await ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 }
 
-                _logger.LogWarning("socket.close");
+                subscribe.Dispose();
                 await ws.CloseAsync(ws.CloseStatus.Value, ws.CloseStatusDescription, CancellationToken.None);
             }
 
         }
+
+
+
+
+
 
 
     }
