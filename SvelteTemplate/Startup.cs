@@ -25,9 +25,9 @@ namespace SvelteTemplate
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddBuildingBlocks()
-                .AddCispAuthentication()
-                ;
+            //services.AddBuildingBlocks()
+            //    .AddCispAuthentication()
+            //    ;
 
             
             
