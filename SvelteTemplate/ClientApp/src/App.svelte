@@ -9,11 +9,7 @@ import Toast from './Shared/Toast.svelte'
   
   export let components = [];
 
-  let s = socket.subscribe(x => {
-	console.log('message', x)
-
-	  if (x) toAsts.warning(x)}
-	)
+  let s = socket.subscribe(x => {if (x) toAsts.warning(x.data)})
   onDestroy(s);
 
   

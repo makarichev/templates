@@ -8,8 +8,9 @@ using Microsoft.Extensions.Hosting;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Reactive.Subjects;
 
-namespace svelte
+namespace SvelteTemplate
 {
     public class Startup
     {
@@ -32,6 +33,9 @@ namespace svelte
             
 
             services.AddTransient<SqlConnection>(x => new SqlConnection(Configuration["SqlConnectionString"]));
+            //innerBus
+            services.AddSingleton<InnerBus>();
+            services.AddHostedService<MolsService>();
 
             services.AddControllers();
 
