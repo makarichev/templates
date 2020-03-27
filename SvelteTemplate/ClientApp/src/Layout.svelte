@@ -1,22 +1,19 @@
 <script>
   import { getContext } from "svelte";
-  import { user } from "./store.js";
+  import { user, reglament, toAsts, socket } from "./store.js";
   import { createEventDispatcher } from "svelte";
   import Modal from "./Shared/Modal.svelte";
   import { asRouterLink } from "./Shared/Actions.js";
 
-
-  
-
   const dispatch = createEventDispatcher();
-  let currentUser = $user
-  
-  
+  let currentUser = $user;
+
   export let filter = null;
 
-  let filterShow = false;
+  let filterModal;
+  
   let apply = () => {
-    filterShow = false;
+    filterModal.hide();
     dispatch("apply", filter);
   };
 
@@ -28,10 +25,6 @@
 </script>
 
 <style>
-  .hidden {
-    display: none;
-  }
-
   .starter-template {
     padding: 0.5rem;
   }
@@ -73,7 +66,39 @@
           Действия
         </a>
         <div class="dropdown-menu">
-          <slot name="actions" />
+          <slot name="actions">
+
+            {#if $reglament}
+              <a
+                class="dropdown-item"
+                href="/mols/new"
+                class:disabled={!$reglament.allowEdit}>
+                Новый сотрудник
+              </a>
+              <a
+                class="dropdown-item"
+                href="/mols/new"
+                on:click|preventDefault={x => toAsts.message('Привет')}
+                class:disabled={!$reglament.allowEdit}>
+                Привет
+              </a>
+              <a
+                class="dropdown-item"
+                href="/mols/new"
+                on:click|preventDefault={x => toAsts.error('И тебе привет')}
+                class:disabled={!$reglament.allowEdit}>
+                И тебе привет
+              </a>
+              <a
+                class="dropdown-item"
+                href="/mols/new"
+                on:click|preventDefault={x => socket.send('Sent to socket')}
+                class:disabled={!$reglament.allowEdit}>
+                Sent to socket
+              </a>
+            {/if}
+
+          </slot>
         </div>
       </li>
     </ul>
@@ -81,21 +106,21 @@
     {#if filter}
       <form class="form-inline" on:submit|preventDefault={apply}>
         <div class="input-group">
-            <input
-              class="form-control"
-              type="search"
-              placeholder="Поиск"
-              bind:value={filter.search} />
-            <div class="input-group-append" id="button-addon4">
-              <button class="btn btn-outline-secondary" type="search">
-                <i class="fa fa-search" />
-              </button>
-            </div>
+          <input
+            class="form-control"
+            type="search"
+            placeholder="Поиск"
+            bind:value={filter.search} />
+          <div class="input-group-append" id="button-addon4">
+            <button class="btn btn-outline-secondary" type="search">
+              <i class="fa fa-search" />
+            </button>
+          </div>
           <div class="input-group-append" id="button-addon4">
             <button
               class="btn btn-outline-secondary"
               type="button"
-              on:click={x => (filterShow = true)}>
+              on:click={x => filterModal.show()}>
               <i class="fa fa-filter" />
             </button>
           </div>
@@ -122,18 +147,22 @@
 <main role="main">
 
   <div class="starter-template">
+
     <slot />
+
+
   </div>
 
 </main>
 
-<Modal bind:show={filterShow}>
+<Modal bind:modal={filterModal} class="modal-lg">
   <div slot="header" class="text-muted">
     <h5>
       <i class="fa fa-filter" />
       Фильтр
     </h5>
   </div>
+
   <form id="filterForm" on:submit|preventDefault={apply}>
     <slot name="filter" {filter} />
   </form>

@@ -5,9 +5,12 @@
 
 <script>
   import Layout from "../../Layout.svelte";
+  import Modal from "../../Shared/Modal.svelte";
   import { route, toAsts } from "../../store.js";
   import { onMount, onDestroy } from "svelte";
   import { asLoader, asRouterLink } from "../../Shared/Actions.js";
+  import Json from "./Json.svelte";
+
 
   $: molId = $route.params.id;
 
@@ -17,7 +20,7 @@
 
   let loading = true;
 
-  onMount(async x => {
+  let refresh = async x => {
     loading = true;
     let q = await fetch(`/api/mols/${$route.params.id}`);
     mol = await q.json();
@@ -28,8 +31,9 @@
     q = await fetch(`/api/mols/posts`);
     posts = await q.json();
     loading = false;
+  }
 
-  });
+  onMount(refresh);
 
   let save = async x => {
     loading = true;
@@ -50,6 +54,8 @@
 
 
 
+  let unworkModal;
+
   let unwork = async x => {
     try {
       let q = await fetch(`/api/mols/unwork`, {
@@ -65,7 +71,7 @@
   let comp = null;
   export let components;
 
-
+  let jsonModal;
 
 
 </script>
@@ -118,16 +124,13 @@
               <a class="dropdown-item" href="/mols/{molId}/hist">
                 История назначений
               </a>
-              <a class="dropdown-item" href="/mols/{molId}/education">
-                Обучение
+              <a class="dropdown-item" href="/" on:click|preventDefault={x =>jsonModal.show({...mol, PHOTO_IMAGE:null})}>
+                JSON
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/" on:click|preventDefault={unwork}>
+              <a class="dropdown-item" href="/" on:click|preventDefault={x => unworkModal.show()}>
                 Уволить
               </a>
-              <div class="dropdown-header" href="/mols/{molId}/education">
-                Обучение
-              </div>
           </li>
 
 
@@ -161,6 +164,7 @@
                 {depts}
                 {posts}
                 {save}
+                {refresh}
                 {loading} />
 
             </div>
@@ -173,3 +177,17 @@
   {/if}
 
 </Layout>
+
+
+
+<Modal bind:modal={unworkModal}>
+  <div slot="header">Увольнение</div>
+  Вы хотите уволить этого сотрудника
+
+  <siv slot="footer">
+    <button type="button" class="btn btn-primary" on:click={x => {unworkModal.hide(); unwork();}}>Да</button>
+  </siv>
+</Modal>
+
+<Json bind:modal={jsonModal}></Json>
+

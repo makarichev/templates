@@ -21,7 +21,6 @@
     "moment": "^2.24.0",
     "page": "^1.11.5",
     "query-string": "^6.11.1",
-    "sirv-cli": "^0.4.4",
-    "sveltestrap": "^3.3.2"
+    "sirv-cli": "^0.4.4"
   }
 }

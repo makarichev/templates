@@ -32,6 +32,7 @@ namespace SvelteTemplate
 
 
             innerBus.Subscribe<ActionUnworkRequest>(async x => await UnworkAsync(x) );
+            innerBus.Subscribe<ActionNewPost>(async x => await NewPostAsync(x));
 
             return Task.CompletedTask;
         }
@@ -41,12 +42,28 @@ namespace SvelteTemplate
 
 
         public async Task UnworkAsync(ActionUnworkRequest request) {
-            await Task.Delay(10000);
+            await Task.Delay(4000);
             var mol = (await repo.QueryAsync(@"select * from mols where mol_id = @molId", request)).Single();
             await innerBus.SendAsync(request.Reply(new ActionUnworkResponse()));
             await innerBus.SendAsync(new ActionClientMessage { Text = $"Сотрудник {mol.NAME} уволен" });
         }
 
+        public async Task NewPostAsync(ActionNewPost request)
+        {
+
+            await repo.ExecuteAsync(@"
+                    update mols set
+                        post_id = @postId,
+                        ddept_id = @deptId
+                    where mol_id = @molId;
+
+                    insert into MOLS_POSTS_HIST(MOL_ID, D_FROM, POST_ID, DEPT_ID)
+                    select @molId, @dFrom, @PostId, @deptId;
+                ", request);
+
+
+            await innerBus.SendAsync(new ActionClientMessage { Text = $"Запрос принят" });
+        }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
@@ -62,6 +79,13 @@ namespace SvelteTemplate
     public class ActionUnworkResponse: ServiceAction
     { public int MolId { get; set; } }
 
+    public class ActionNewPost : ServiceAction
+    {
+        public int MolId { get; set; }
+        public int PostId { get; set; }
+        public int DeptId { get; set; }
+        public DateTime DFrom { get; set; }
+    }
 
 
 }

@@ -8,6 +8,8 @@ export function asDate(node, value) {
         node.innerHTML = x? moment(x).format('DD.MM.YYYY'): '';
     }
 
+    update(value);
+
     return {
         update: update
     }

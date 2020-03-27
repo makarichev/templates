@@ -38,7 +38,9 @@ function createSocket() {
   let socket, sessionId
   const { subscribe } = readable(null, set => {
 
-    socket = new WebSocket(`ws://${window.location.host}/api/mols/connect`)
+    
+
+    socket = new WebSocket(`${(window.location.protocol === 'https:'?"wss":"ws")}://${window.location.host}/api/mols/connect`)
     socket.onclose = function (x) { console.log('CLOSE', x) }
     socket.onopen = x => {
       console.log(x)

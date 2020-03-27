@@ -253,6 +253,12 @@ namespace svelte.Controllers
             return Ok();
         }
 
+        [HttpPost("newpostquery")]
+        public async Task<ActionResult> NewPostQuery([FromBody]ActionNewPost request) {
+ 
+            await innerBus.SendAsync(request);
+            return Ok();
+        }
 
 
         [HttpGet("connect")]
@@ -286,10 +292,6 @@ namespace svelte.Controllers
 
 
     }
-
-
-
-
 
 
     public class MolsFilter

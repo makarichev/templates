@@ -163,36 +163,5 @@
     <Filter bind:filter={_filter} />
   </div>
 
-  <div slot="actions">
-    {#if $reglament}
-      <a
-        class="dropdown-item"
-        href="/mols/new"
-        class:disabled={!$reglament.allowEdit}>
-        Новый сотрудник
-      </a>
-      <a
-        class="dropdown-item"
-        href="/mols/new"
-        on:click|preventDefault={x => toAsts.message('Привет')}
-        class:disabled={!$reglament.allowEdit}>
-        Привет
-      </a>
-      <a
-        class="dropdown-item"
-        href="/mols/new"
-        on:click|preventDefault={x => toAsts.error('И тебе привет')}
-        class:disabled={!$reglament.allowEdit}>
-        И тебе привет
-      </a>
-      <a
-        class="dropdown-item"
-        href="/mols/new"
-        on:click|preventDefault={x => socket.send('Sent to socket')}
-        class:disabled={!$reglament.allowEdit}>
-        Sent to socket
-      </a>
-    {/if}
-  </div>
 
 </Layout>

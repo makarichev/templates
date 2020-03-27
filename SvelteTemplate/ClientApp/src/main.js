@@ -8,7 +8,6 @@ import About from './Components/About.svelte';
  import Private from './Components/Mols/Private.svelte';
  import Photo from './Components/Mols/Photo.svelte';
  import Access from './Components/Mols/Access.svelte';
- import Education from './Components/Mols/Education.svelte';
  import Hist from './Components/Mols/Hist.svelte';
 
 
@@ -46,7 +45,6 @@ setRoute('/mols/:id/common', Mol, Common)
 setRoute('/mols/:id/private', Mol, Private)
 setRoute('/mols/:id/photo', Mol, Photo)
 setRoute('/mols/:id/access', Mol, Access)
-setRoute('/mols/:id/education', Mol, Education)
 setRoute('/mols/:id/hist', Mol, Hist)
 
 
